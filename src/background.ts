@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { defaultPORT, setPORT, getPORT, PortUpdateEvent } from "./config";
+import { defaultPORT, setPORT, getPORT, SWMessage, getSettings } from "./config";
 
 chrome.runtime.onInstalled.addListener(() => {
   getPORT.then(PORT => {
@@ -7,12 +7,23 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-getPORT.then(PORT => {
-  let socketCleanup = socketSetup(PORT ?? defaultPORT);
-  chrome.runtime.onMessage.addListener((event: PortUpdateEvent) => {
-    if (event.type === "PORT UPDATE") {
-      socketCleanup();
-      socketCleanup = socketSetup(event.payload);
+getSettings.then(({ PORT, toggled }) => {
+  let socketCleanup = toggled ? socketSetup(PORT ?? defaultPORT) : () => void false;
+  !toggled && offBadge();
+
+  chrome.runtime.onMessage.addListener((event: SWMessage) => {
+    switch (event.type) {
+      case "PORT UPDATE":
+        PORT = event.payload;
+        if (!toggled) return;
+        socketCleanup();
+        socketCleanup = socketSetup(PORT);
+        break;
+      case "TOGGLE UPDATE":
+        toggled = event.payload;
+        if (!toggled) return socketCleanup();
+        socketCleanup = socketSetup(PORT ?? defaultPORT);
+        break;
     }
   });
 });
@@ -27,8 +38,14 @@ function socketSetup(PORT: number) {
 
   function cleanUp() {
     socket.disconnect();
+    offBadge();
   }
   return cleanUp;
+}
+
+function offBadge() {
+  chrome.action.setBadgeText({ text: "off" });
+  chrome.action.setBadgeBackgroundColor({ color: "#AAAAAA" });
 }
 
 function reloadExtensions() {

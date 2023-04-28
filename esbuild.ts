@@ -41,6 +41,7 @@ function buildForProd() {
     archive.pipe(fsSync.createWriteStream("./extension.zip"));
     archive.directory("dist/", false);
     archive.finalize();
+    io.close();
   });
 }
 

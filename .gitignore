@@ -3,6 +3,7 @@ dist/**/*.js.map
 node_modules
 todo.md
 dist/index.css
+dist/icon128.png
 .js
 meta.json
 extension.zip

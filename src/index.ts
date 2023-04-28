@@ -1,14 +1,27 @@
 import z from "zod";
-import { setPORT, getPORT, defaultPORT, type PortUpdateEvent } from "./config";
+import { setPORT, getPORT, defaultPORT, getToggled, setToggled, sendMessage } from "./config";
 
 function main() {
-  const input = document.querySelector<HTMLInputElement>("input#port");
+  portInput();
+  toggleInput();
+}
 
-  if (!input) {
-    const errorDiv = document.createElement("div");
-    errorDiv.innerText = "Something went wrong. Please reload the extension";
-    return document.body.appendChild(errorDiv);
-  }
+function toggleInput() {
+  const toggle = document.querySelector<HTMLInputElement>("input#toggle");
+  if (!toggle) return document.querySelector("div#error")?.setAttribute("aria-hidden", "false");
+
+  getToggled.then(toggled => (toggle.checked = toggled ?? false));
+
+  toggle.addEventListener("input", () => {
+    setToggled(toggle.checked);
+    sendMessage({ type: "TOGGLE UPDATE", payload: toggle.checked });
+  });
+}
+
+function portInput() {
+  const input = document.querySelector<HTMLInputElement>("input#port");
+  if (!input) return document.querySelector("div#error")?.setAttribute("aria-hidden", "false");
+
   getPORT.then(PORT => (input.value = (PORT ?? defaultPORT).toString()));
 
   document.querySelector("button")?.addEventListener("click", e => {
@@ -22,11 +35,12 @@ function main() {
     input.setAttribute("aria-invalid", validatedPORT.success ? "false" : "true");
     if (!validatedPORT.success) return;
     setPORT(validatedPORT.data);
-    chrome.runtime.sendMessage<PortUpdateEvent>({
+    sendMessage({
       type: "PORT UPDATE",
       payload: validatedPORT.data,
     });
     window.close();
   });
 }
+
 main();

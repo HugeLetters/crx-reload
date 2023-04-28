@@ -16,18 +16,31 @@
     />
     <title>CRX Reload</title>
   </head>
-  <body class="p-4 bg-neutral-800 text-slate-200">
+  <body class="p-4 bg-neutral-800 text-slate-200 flex flex-col gap-2">
     <form class="flex gap-1">
       <input
         id="port"
-        type="number"
         placeholder="PORT"
         aria-label="PORT"
         autocomplete="off"
-        class="bg-neutral-600 rounded-md pl-1 aria-[invalid=true]:outline-red-700 aria-[invalid=true]:outline"
+        class="bg-neutral-600 w-12 rounded-md pl-1 aria-[invalid=true]:outline-red-700 aria-[invalid=true]:outline"
       />
       <button class="rounded-sm border px-1">OK</button>
     </form>
+    <label class="flex items-center gap-2">
+      Turn on:
+      <input
+        id="toggle"
+        type="checkbox"
+      />
+    </label>
+    <div
+      aria-hidden="true"
+      id="error"
+      class="aria-hidden:hidden text-red-300"
+    >
+      Something went wrong. Please reload the extension
+    </div>
     <noscript
       >This extension does not work without JavaScript. Please enable it in your settingsx</noscript
     >
