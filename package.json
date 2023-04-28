@@ -1,0 +1,37 @@
+{
+  "name": "crx-reload",
+  "version": "0.0.0",
+  "description": "Automatically reload your chrome extension during development with an http request",
+  "type": "module",
+  "scripts": {
+    "dev": "esbuild esbuild.ts --outfile=esbuild.js && concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"node ./esbuild.js\" \"tailwindcss -o ./dist/index.css -m -w\"",
+    "build": "esbuild esbuild.ts --outfile=esbuild.js && concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"node ./esbuild.js -b\" \"tailwindcss -o ./dist/index.css -m \""
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "development"
+  ],
+  "author": "Huge Letters",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/archiver": "^5.3.2",
+    "@types/chrome": "^0.0.233",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "archiver": "^5.3.1",
+    "concurrently": "^8.0.1",
+    "esbuild": "^0.17.17",
+    "eslint": "^8.38.0",
+    "socket.io": "^4.6.1"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.14",
+    "fastdom": "^1.0.11",
+    "postcss": "^8.4.22",
+    "socket.io-client": "^4.6.1",
+    "tailwindcss": "^3.3.1",
+    "zod": "^3.21.4"
+  }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="index.css"
+    />
+    <title>CRX Reload</title>
+  </head>
+  <body class="p-4 bg-neutral-800 text-slate-200">
+    <form class="flex gap-1">
+      <input
+        id="port"
+        type="number"
+        placeholder="PORT"
+        aria-label="PORT"
+        autocomplete="off"
+        class="bg-neutral-600 rounded-md pl-1 aria-[invalid=true]:outline-red-700 aria-[invalid=true]:outline"
+      />
+      <button class="rounded-sm border px-1">OK</button>
+    </form>
+    <noscript
+      >This extension does not work without JavaScript. Please enable it in your settingsx</noscript
+    >
+    <script
+      src="index.js"
+      type="module"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+dist/**/*.js
+dist/**/*.js.map
+node_modules
+todo.md
+dist/index.css
+.js
+meta.json
+extension.zip
+.vscode
+esbuild.js
