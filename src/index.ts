@@ -1,4 +1,3 @@
-import z from "zod";
 import { setPORT, getPORT, defaultPORT, getToggled, setToggled, sendMessage } from "./config";
 
 function main() {
@@ -26,18 +25,14 @@ function portInput() {
 
   document.querySelector("button")?.addEventListener("click", e => {
     e.preventDefault();
-    const validatedPORT = z.coerce
-      .number()
-      .int()
-      .min(1)
-      .max(2 ** 16 - 1)
-      .safeParse(input.value);
-    input.setAttribute("aria-invalid", validatedPORT.success ? "false" : "true");
-    if (!validatedPORT.success) return;
-    setPORT(validatedPORT.data);
+    const validatedPORT = parseInt(input.value);
+    const isValid = !isNaN(validatedPORT) && validatedPORT >= 1 && validatedPORT <= 2 ** 16 - 1;
+    input.setAttribute("aria-invalid", isValid ? "false" : "true");
+    if (!isValid) return;
+    setPORT(validatedPORT);
     sendMessage({
       type: "PORT UPDATE",
-      payload: validatedPORT.data,
+      payload: validatedPORT,
     });
     window.close();
   });
